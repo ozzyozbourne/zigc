@@ -17,7 +17,7 @@ pub fn build(b: *std.Build) void {
     exe.linkLibC();
     exe.addLibraryPath(std.build.LazyPath.relative("../../../../../../opt/homebrew/lib"));
     exe.linkSystemLibrary("GLEW");
-    exe.linkSystemLibrary("glfw.3");
+    exe.linkSystemLibrary("glfw");
 
     const run_cmd = b.addRunArtifact(exe);
 
