@@ -16,8 +16,11 @@ pub fn build(b: *std.Build) void {
 
     exe.linkLibC();
     exe.addLibraryPath(std.build.LazyPath.relative("../../../../../../opt/homebrew/lib"));
-    exe.linkSystemLibrary("GLEW");
     exe.linkSystemLibrary("glfw");
+    // exe.linkFramework("OpenGL");
+    // exe.linkFramework("Cocoa");
+    // exe.linkFramework("IOKit");
+    // exe.linkFramework("CoreVideo");
 
     const run_cmd = b.addRunArtifact(exe);
 

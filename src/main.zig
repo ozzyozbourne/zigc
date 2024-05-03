@@ -13,10 +13,23 @@ pub fn main() !void {
     const glfw_err: c_int = glfw3.glfwInit();
     print("{}\n", .{glfw_err});
 
+    if (glfw_err != glfw3.GLFW_TRUE) {
+        print("glwf init error is not zero {d}\n", .{glfw_err});
+        return;
+    }
+
     const window: ?*glfw3.GLFWwindow = glfw3.glfwCreateWindow(400, 400, "test", null, null);
+
     if (window == null) {
-        print("Error\n", .{});
+        print("Error -> {?}\n", .{window});
     } else {
         print("{?}\n", .{window});
+    }
+
+    glfw3.glfwMakeContextCurrent(window);
+
+    while (glfw3.glfwWindowShouldClose(window) != 1) {
+        glfw3.glfwSwapBuffers(window);
+        glfw3.glfwPollEvents();
     }
 }
