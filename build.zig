@@ -15,7 +15,7 @@ pub fn build(b: *std.Build) void {
     b.installArtifact(exe);
 
     exe.linkLibC();
-    exe.addLibraryPath(std.build.LazyPath.relative("../../../../../../opt/homebrew/lib"));
+    exe.addLibraryPath(.{ .cwd_relative = "/opt/homebrew/lib" });
     exe.linkSystemLibrary("glfw");
     exe.linkSystemLibrary("GLEW");
     exe.linkFramework("OpenGL");
