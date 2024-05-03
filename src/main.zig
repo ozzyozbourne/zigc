@@ -1,5 +1,6 @@
 const print = @import("std").debug.print;
 const glfw3 = @import("glfw3.zig");
+const glew = @import("glew.zig");
 
 pub fn main() !void {
     var major: c_int = undefined;
@@ -18,7 +19,12 @@ pub fn main() !void {
         return;
     }
 
+    glfw3.glfwWindowHint(glfw3.GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfw3.glfwWindowHint(glfw3.GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfw3.glfwWindowHint(glfw3.GLFW_OPENGL_PROFILE, glfw3.GLFW_OPENGL_CORE_PROFILE);
+
     const window: ?*glfw3.GLFWwindow = glfw3.glfwCreateWindow(400, 400, "test", null, null);
+    defer glfw3.glfwDestroyWindow(window);
 
     if (window == null) {
         print("Error -> {?}\n", .{window});
@@ -27,6 +33,17 @@ pub fn main() !void {
     }
 
     glfw3.glfwMakeContextCurrent(window);
+    glew.glewExperimental = glew.GL_TRUE;
+
+    const glew_err: glew.GLenum = glew.glewInit();
+
+    if (glew_err == glew.GLEW_OK) {
+        print("All good\n", .{});
+    }
+
+    const version: [*c]const glew.GLubyte = glew.glGetString(glew.GL_VERSION);
+
+    print("{s}\n", .{version});
 
     while (glfw3.glfwWindowShouldClose(window) != 1) {
         glfw3.glfwSwapBuffers(window);
