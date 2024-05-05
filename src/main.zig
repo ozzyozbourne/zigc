@@ -5,6 +5,28 @@ const glew = @import("glew.zig");
 const WIDTH: glfw3.GLint = 800;
 const HEIGHT: glfw3.GLint = 600;
 
+var VAO: glfw3.GLuint = undefined;
+var VBO: glfw3.GLuint = undefined;
+var shader: glfw3.GLuint = undefined;
+
+fn createdTriangle() void {
+    const vertices = [_]glfw3.GLfloat{ -1.0, -1.0, 0.0, -1.0, -1.0, 0, 0, 0.0, 1.0, 0.0 };
+
+    glew.glGenVertexArrays(1, &VAO);
+    glew.glBindVertexArray(VAO);
+
+    glew.glGenBuffers(1, &VBO);
+    glew.glBindBuffer(glew.GL_ARRAY_BUFFER, VBO);
+
+    glew.glBufferData(glew.GL_ARRAY_BUFFER, @sizeOf(vertices), vertices, glew.GL_STATIC_DRAW);
+    glew.glVertexAttribPointer(0, 3, glfw3.GL_FLOAT, glfw3.GL_FALSE, 0, 0);
+
+    glew.glEnableVertexAttribArray(0);
+    glew.glBindBuffer(glew.GL_ARRAY_BUFFER, 0);
+
+    glew.glBindVertexArray(0);
+}
+
 pub fn main() !void {
     // initilise GLFW
     const init_error: c_int = glfw3.glfwInit();
@@ -54,7 +76,7 @@ pub fn main() !void {
     }
 
     //Setup Viewport size
-    glew.glViewport(0, 0, bufferWidth, bufferHeight);
+    glfw3.glViewport(0, 0, bufferWidth, bufferHeight);
 
     //Loop until the window closed
     while (glfw3.glfwWindowShouldClose(window) != 1) {
@@ -62,7 +84,7 @@ pub fn main() !void {
         glfw3.glfwPollEvents();
 
         //clear window
-        glfw3.glClearColor(@as(f32, 1.0), @as(f32, 0.0), @as(f32, 0.0), @as(f32, 1.0));
+        glfw3.glClearColor(1.0, 0.0, 0.0, 1.0);
         glfw3.glClear(glfw3.GL_COLOR_BUFFER_BIT);
 
         glfw3.glfwSwapBuffers(window);
